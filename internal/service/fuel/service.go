@@ -65,13 +65,11 @@ func (s Service) Record(ctx context.Context, input RecordInput) (RecordResult, e
 			return err
 		}
 		if input.OdometerKm > vehicleItem.OdometerKm {
-			previousVehicle := vehicleItem
 			previousVersion := vehicleItem.Version
-			updatedVehicle := vehicleItem
-			updatedVehicle.OdometerKm = input.OdometerKm
-			updatedVehicle.Version++
-			updatedVehicle.UpdatedAt = now
-			if err := tx.SaveVehicle(ctx, previousVehicle, previousVersion); err != nil {
+			vehicleItem.OdometerKm = input.OdometerKm
+			vehicleItem.Version++
+			vehicleItem.UpdatedAt = now
+			if err := tx.SaveVehicle(ctx, vehicleItem, previousVersion); err != nil {
 				return err
 			}
 		}
